@@ -10,8 +10,7 @@ function Form() {
     const [isValidForm, setIsValidForm] = useState(false)
     const [disabledButtun, setDisabledButton] = useState(true)
     const [user, setUser] = useState("")
-
-
+    const [errorData, setErrorData] = useState(false)
 
     useEffect(() => {
         const checkEmail = validateEmail(changeEmail)
@@ -24,7 +23,10 @@ function Form() {
             setDisabledButton(true)
         }
 
-        if (checkEmail) { setErrorEmail(true) } else { setErrorEmail(false) }
+        if (checkEmail) { setErrorEmail(true) } else {
+            setErrorEmail(false)
+
+        }
         if (checkPassword) { setErrorPassword(true) } else { setErrorPassword(false) }
     }, [changeEmail, changePassword])
 
@@ -38,13 +40,22 @@ function Form() {
             fetch(API_URL)
                 .then(response => response.json())
                 .then((response) => {
-                    const userData = response.find((user) => user.email === 'Sherwood@rosamond.me')
-                    setUser(userData)
+                    const userData = response.find((user) => user.email === changeEmail)
+                    if (userData) { setUser(userData) } else { setErrorData(true) }
                 })
                 .catch(error => console.log("Ошибка -> ", error))
         }
         postData();
+
+        setTimeout(() => {
+            setUser("")
+            setErrorData(false)
+            setChangeEmail("")
+            setChangePassword("")
+        }, 6000);
+
     }
+
 
     return (
         <section className={css.container}>
@@ -63,7 +74,7 @@ function Form() {
                         value={changeEmail}
                         onChange={(e) => { setChangeEmail(e.target.value) }}
                     />
-                    {!errorEmail && changeEmail !=="" && <p className={css.error}>Введите корректные данные</p>}
+                    {!errorEmail && changeEmail !== "" && <p className={css.error}>Введите корректные данные</p>}
                 </div>
                 <div className={css.inputContainer}>
                     <label className={css.label}>Пароль</label>
@@ -75,16 +86,24 @@ function Form() {
                         value={changePassword}
                         onChange={(e) => setChangePassword(e.target.value)}
                     />
-                    {!errorPassword  && changePassword !=="" && <p className={css.error}>Введите корректные данные</p>}
+                    {!errorPassword && changePassword !== "" && <p className={css.error}>Введите корректные данные</p>}
                 </div>
                 <button type="submit" disabled={disabledButtun} className={`${!isValidForm ? css.disabled : ""}`}>  Войти  </button>
             </form>
 
             {user &&
                 <div className={css.info}>
+                    <p>Ваш запрос улетел на адрес https://jsonplaceholder.typicode.com/users/ </p> <br/>
                     <p>Вы вошли под пользователем: </p>
-                    <p>{user.email}</p>
+                    <p>{changeEmail}</p>
                     <p>{user.username}</p>
+                    <p>Скоро все данные очистятся</p>
+                </div>
+            }
+            {errorData &&
+                <div className={css.info}>
+                    <p>Ваш запрос улетел, но пользователя {changeEmail}  не существует &#128513; </p>
+                    <p>Скоро все данные очистятся</p>
                 </div>
             }
         </section>
