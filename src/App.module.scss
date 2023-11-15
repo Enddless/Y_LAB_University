@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.wrapper {
+  background: url("./assets/images/background.jpg") no-repeat;
+  background-size: cover; 
+  width: 100vw; 
+  height: 100vh; 
+}
