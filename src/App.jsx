@@ -1,5 +1,6 @@
 import css from'./App.module.scss'
-import MainPage from './pages/Main'
+import MainPage from './pages/MainPage'
+
 
 function App() {
 
