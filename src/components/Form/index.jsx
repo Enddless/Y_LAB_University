@@ -46,7 +46,6 @@ function Form() {
         postData();
     }
 
-    console.log(errorEmail)
     return (
         <section className={css.container}>
             <p>Перед началом: Коллеги, в этой форме есть валидации на количество символов в пароле, и на ввод символов в почте. Для демонстрации отправки формы введите, пожалуйста, почту Sherwood@rosamond.me </p>
